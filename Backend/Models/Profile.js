@@ -3,10 +3,30 @@ import mongoose , {model} from "mongoose";
 const {Schema} = mongoose;
 
 const ProfileScehma = new Schema({
+        name : {
+            type : String,
+            required : true
+        },
+        email : {
+            type : String,
+            required : true
+        },
+        password : {
+            type : String,
+            required : true
+        },
         image : {
-            type : String    
+            type : String ,
+            required : true
+        },
+        status : {
+            type : Boolean,
+            default : 0
+        },
+        date : {
+            type : Date,
+            default : Date.now
         }
 })
 
-// export default model('user' , UserScehma); 
 export default model('profile' , ProfileScehma); 

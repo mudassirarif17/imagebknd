@@ -1,10 +1,11 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
-import link from "./images/1711791876331Screenshot (6).png"
 
 function App() {
   const [image, setImage] = useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [allImage, setAllImage] = useState(null);
 
   useEffect(() => {
@@ -12,42 +13,89 @@ function App() {
   }, []);
 
 
+  // const submitImage = async (e) => {
+  //   e.preventDefault();
+
+  //   const formData = new FormData();
+  //   formData.append("image", image);
+  //   formData.append("name", name);
+  //   formData.append("email", email);
+  //   formData.append("password", password);
+
+  //   const result = await axios.post(
+  //     "http://localhost:5000/api/auth/upload-image",
+  //     formData,
+  //     {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     }
+  //   );
+  // console.log(result);
+  // // Clear form fields after successful submission if needed
+  // setName("");
+  // setEmail("");
+  // setPassword("");
+  // setImage(null);
+  // // Fetch all images after successful submission
+  // getImage();
+  // };
+
   const submitImage = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append("image", image);
-
-    const result = await axios.post(
-      "http://localhost:5000/upload-image",
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+  
+    try {
+      const result = await axios.post(
+        "http://localhost:5000/api/auth/upload-image",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      console.log(result);
+      // Clear form fields after successful submission if needed
+      setName("");
+      setEmail("");
+      setPassword("");
+      setImage(null);
+      // Fetch all images after successful submission
+      setTimeout(() => {
+        getImage();
+      }, 1000);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      // Handle error here
+    }
   };
+  
 
-  const onInputChange = (e) => {
-    console.log(e.target.files[0]);
-    setImage(e.target.files[0]);
-  };
 
   const getImage = async () => {
-    const result = await axios.get("http://localhost:5000/get-image");
+    const result = await axios.get("http://localhost:5000/api/auth/get-image");
     console.log(result);
     setAllImage(result.data.data);
   };
 
   return (
     <div>
-      <form onSubmit={submitImage}>
-        <input type="file" accept="image/*" onChange={onInputChange}></input>
+      <form onSubmit={ submitImage }>
+        <input type="text" value={ name } onChange={ (e) => setName(e.target.value) } placeholder="Name" />
+        <br />
+        <input type="text" value={ email } onChange={ (e) => setEmail(e.target.value) } placeholder="Email" />
+        <br />
+        <input type="password" value={ password } onChange={ (e) => setPassword(e.target.value) } placeholder="Password" />
+        <br />
+        <input type="file" accept="image/*" onChange={ (e) => setImage(e.target.files[0]) }></input>
         <button type="submit">Submit</button>
       </form>
-      
+
       {
-        allImage && allImage.map((data , index)=>(
-          <img src={require(`./images/${data.image}`)} />
+        allImage && allImage.map((data, index) => (
+          <img height={ 100 } width={ 100 } src={ require(`./images/${data.image}`) } />
         ))
       }
     </div>
