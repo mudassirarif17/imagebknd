@@ -13,32 +13,6 @@ function App() {
   }, []);
 
 
-  // const submitImage = async (e) => {
-  //   e.preventDefault();
-
-  //   const formData = new FormData();
-  //   formData.append("image", image);
-  //   formData.append("name", name);
-  //   formData.append("email", email);
-  //   formData.append("password", password);
-
-  //   const result = await axios.post(
-  //     "http://localhost:5000/api/auth/upload-image",
-  //     formData,
-  //     {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     }
-  //   );
-  // console.log(result);
-  // // Clear form fields after successful submission if needed
-  // setName("");
-  // setEmail("");
-  // setPassword("");
-  // setImage(null);
-  // // Fetch all images after successful submission
-  // getImage();
-  // };
-
   const submitImage = async (e) => {
     e.preventDefault();
   
@@ -50,7 +24,7 @@ function App() {
   
     try {
       const result = await axios.post(
-        "http://localhost:5000/api/auth/upload-image",
+        "http://localhost:5000/api/auth/signup",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
